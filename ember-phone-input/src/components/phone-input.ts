@@ -269,6 +269,17 @@ export default class PhoneInputComponent extends Component<PhoneInputSignature> 
     element.removeEventListener('countrychange', this.onCountryChange);
   }
 
+  @action
+  private onCountryChange(): void {
+    const selectedCountry = this.intlTelInputInstance?.getSelectedCountryData();
+
+    if (selectedCountry?.iso2) {
+      this.intlTelInputInstance?.setCountry(selectedCountry.iso2);
+    }
+
+    this.onInput();
+  }
+
   private async loadAndSetup(element: HTMLInputElement): Promise<void> {
     try {
       this.isLoadingIntlTelInput = true;
@@ -285,10 +296,7 @@ export default class PhoneInputComponent extends Component<PhoneInputSignature> 
 
       this.formatNumber();
 
-      element.addEventListener(
-        'countrychange',
-        this.onCountryChange.bind(this)
-      );
+      element.addEventListener('countrychange', this.onCountryChange);
     } catch (error) {
       this.args.onError?.(error);
     } finally {
@@ -394,15 +402,5 @@ export default class PhoneInputComponent extends Component<PhoneInputSignature> 
           }
         : null
     };
-  }
-
-  private onCountryChange(): void {
-    const selectedCountry = this.intlTelInputInstance?.getSelectedCountryData();
-
-    if (selectedCountry?.iso2) {
-      this.intlTelInputInstance?.setCountry(selectedCountry.iso2);
-    }
-
-    this.onInput();
   }
 }
