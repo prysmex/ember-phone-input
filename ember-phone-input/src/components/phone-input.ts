@@ -35,7 +35,7 @@ export interface PhoneInputArgs {
   onlyCountries?: string[];
   preferredCountries?: string[];
   separateDialCode?: boolean;
-  dropdownContainer?: Node;
+  dropdownContainer?: Node | undefined;
   onError?: (error: unknown) => void;
 }
 
@@ -235,10 +235,10 @@ export default class PhoneInputComponent extends Component<PhoneInputSignature> 
    * next to the input using JavaScript. This is useful when the input is inside a container with overflow: hidden. Note that the absolute
    * positioning can be broken by scrolling, so it will automatically close on the window scroll event.
    * @argument dropdownContainer
-   * @type {Node|null}
+   * @type {Node|undefined}
    */
-  get dropdownContainer(): Node | null {
-    return this.args.dropdownContainer || null;
+  get dropdownContainer(): Node | undefined {
+    return this.args.dropdownContainer;
   }
 
   @action
