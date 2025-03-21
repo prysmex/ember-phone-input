@@ -35,6 +35,7 @@ export interface PhoneInputArgs {
   onlyCountries?: string[];
   preferredCountries?: string[];
   separateDialCode?: boolean;
+  dropdownContainer?: Node;
   onError?: (error: unknown) => void;
 }
 
@@ -229,6 +230,17 @@ export default class PhoneInputComponent extends Component<PhoneInputSignature> 
     return this.args.separateDialCode || false;
   }
 
+  /**
+   * Instead of putting the country dropdown next to the input, append it to the specified node, and it will then be positioned absolutely
+   * next to the input using JavaScript. This is useful when the input is inside a container with overflow: hidden. Note that the absolute
+   * positioning can be broken by scrolling, so it will automatically close on the window scroll event.
+   * @argument dropdownContainer
+   * @type {Node|null}
+   */
+  get dropdownContainer(): Node | null {
+    return this.args.dropdownContainer || null;
+  }
+
   @action
   onInput(event?: Event): boolean {
     const internationalPhoneNumber =
@@ -312,7 +324,8 @@ export default class PhoneInputComponent extends Component<PhoneInputSignature> 
       initialCountry,
       onlyCountries,
       preferredCountries,
-      separateDialCode
+      separateDialCode,
+      dropdownContainer
     } = this;
 
     const options: intlTelInput.Options = {
@@ -323,7 +336,8 @@ export default class PhoneInputComponent extends Component<PhoneInputSignature> 
       initialCountry,
       onlyCountries,
       preferredCountries,
-      separateDialCode
+      separateDialCode,
+      dropdownContainer
     };
 
     if (customPlaceholder) {
